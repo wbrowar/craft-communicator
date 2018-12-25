@@ -1,0 +1,25 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Communicator plugin for Craft CMS
+ *
+ * Changelog Widget Settings
+ *
+ * @author    Will Browar
+ * @copyright Copyright (c) 2018 Will Browar
+ * @link      https://wbrowar.com
+ * @package   Communicator
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{{ forms.textField({
+    label: 'How many logs should be shown?',
+    id: 'totalLogs',
+    name: 'totalLogs',
+    size: 3,
+    type: 'number',
+    value: widget['totalLogs'] ?? 1,
+}) }}

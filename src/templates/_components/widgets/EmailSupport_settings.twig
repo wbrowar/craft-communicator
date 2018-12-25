@@ -1,0 +1,31 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Communicator plugin for Craft CMS
+ *
+ * EmailSupport Widget Settings
+ *
+ * @author    Will Browar
+ * @copyright Copyright (c) 2018 Will Browar
+ * @link      https://wbrowar.com
+ * @package   Communicator
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{% if communicatorSettings.emailSupportContacts|length %}
+    {% set contacts = [] %}
+    {% for item in communicatorSettings.emailSupportContacts %}
+        {% set contacts = contacts|merge([{ label: item.name, value: item.email }]) %}
+    {% endfor %}
+
+    {{ forms.selectField({
+        label: 'Contact Person',
+        id: 'contact',
+        name: 'contact',
+        value: widget['contact'] ?? null,
+        options: contacts
+    }) }}
+{% endif %}

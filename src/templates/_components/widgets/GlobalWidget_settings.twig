@@ -1,0 +1,26 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Communicator plugin for Craft CMS
+ *
+ * GlobalMessage Widget Settings
+ *
+ * @author    Will Browar
+ * @copyright Copyright (c) 2018 Will Browar
+ * @link      https://wbrowar.com
+ * @package   Communicator
+ * @since     1.0.0
+ */
+#}
+
+{#{% import "_includes/forms" as forms %}#}
+
+{#{% do view.registerAssetBundle("wbrowar\\communicator\\assetbundles\\communicator\\CommunicatorAsset") %}#}
+
+{#{{ forms.textField({#}
+    {#label: 'Message',#}
+    {#instructions: 'Enter a message here.',#}
+    {#id: 'message',#}
+    {#name: 'message',#}
+    {#value: widget['message']})#}
+{#}}#}

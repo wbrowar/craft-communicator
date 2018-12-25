@@ -1,0 +1,108 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Communicator plugin for Craft CMS 3.x
+ *
+ * Communicator index.twig
+ *
+ * @author    Will Browar
+ * @copyright Copyright (c) 2018 Will Browar
+ * @link      https://wbrowar.com
+ * @package   Communicator
+ * @since     1.0.0
+ */
+#}
+
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+{% import "communicator/macros/helpers.twig" as helpers %}
+
+{% do view.registerAssetBundle("wbrowar\\communicator\\assetbundles\\communicator\\CommunicatorAsset") %}
+
+{% set docsUrl = "https://github.com/wbrowar/communicator/blob/master/README.md" %}
+
+{% set title = "Changelog" %}
+
+{#{% set pluginCpUrl = url('communicator/changelog') %}#}
+
+{#{% set selectedSubnavItem = 'changelog' %}#}
+
+{#{% set iconUrl = view.getAssetManager().getPublishedUrl('@wbrowar/communicator/assetbundles/changelogcpsection/dist', true) ~ '/img/Changelog-icon.svg' %}#}
+
+{% set content %}
+    {% set logs = craft.communicator.getChanglogs %}
+
+    {% set logArray = [] %}
+    {% for item in logs %}
+        {% set logArray = logArray|merge([item.id]) %}
+    {% endfor %}
+
+    {% set contentTemplate %}# Added
+- Newly added features listed here
+
+# Changed
+- Updates to existing features
+
+# Fixed
+- Issues that have been fixed
+
+# Deleted
+- Features that have been deleted{% endset %}
+    <div id="communicator__changelog" class="communicator__changelog__page" data-log-array="{{ logArray|json_encode }}">
+        <div class="communicator__changelog__page__form">
+            {% if currentUser and currentUser.can('editChangelogs') %}
+                <form method="post" accept-charset="UTF-8">
+                    {{ csrfInput() }}
+                    <input type="hidden" name="action" value="communicator/changelog/add-log">
+
+                    <h2>{{ "Add a new log entry"|t('communicator') }}</h2>
+
+                    <div class="flex">
+                        <div class="flex-grow">
+                            {{ forms.textField({
+                                label: 'Version Number',
+                                id: 'version',
+                                name: 'version',
+                                required: true,
+                                size: 5,
+                                placeholder: '1.0.0',
+                                value: craft.communicator.getNextSemver,
+                            }) }}
+                        </div>
+                        <div class="flex-grow">
+                            {{ forms.dateField({
+                                label: 'Date',
+                                id: 'date',
+                                name: 'date',
+                                required: true,
+                                value: now,
+                            }) }}
+                        </div>
+                    </div>
+
+
+                    {{ forms.textareaField({
+                        label: 'Log Content',
+                        id: 'content',
+                        name: 'content',
+                        class: 'nicetext',
+                        required: true,
+                        rows: 5,
+                        placeholder: contentTemplate,
+                        instructions: 'Accepts Markdown.',
+                        value: (recentLogEntry ?? false) ? '' : contentTemplate,
+                    }) }}
+
+                    <input class="btn submit" type="submit" value="Add Log">
+                </form>
+            {% endif %}
+        </div>
+        <div class="communicator__changelog__page__logs">
+            {% if logs ?? false %}
+                {{ helpers.renderLogs(logs, { admin: (currentUser and currentUser.can('editChangelogs')) }) }}
+            {% else %}
+                <p>There is nothing to display just yet! Check back again.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endset %}

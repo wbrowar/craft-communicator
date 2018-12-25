@@ -1,0 +1,95 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Communicator plugin for Craft CMS 3.x
+ *
+ * Communicator Settings.twig
+ *
+ * @author    Will Browar
+ * @copyright Copyright (c) 2018 Will Browar
+ * @link      https://wbrowar.com
+ * @package   Communicator
+ * @since     1.0.0
+ */
+#}
+
+{% macro replaceHeaders(text) -%}
+    {% set added = '<h5 class="communicator__changelog__log__header">🚀Added</h5>'|t('communicator') %}
+    {% set changed = '<h5 class="communicator__changelog__log__header">🔧Changed</h5>'|t('communicator') %}
+    {% set fixed = '<h5 class="communicator__changelog__log__header">🚧Fixed</h5>'|t('communicator') %}
+    {% set deleted = '<h5 class="communicator__changelog__log__header">🔥Deleted</h5>'|t('communicator') %}
+
+    {{ text|replace({
+        '<h1>Added</h1>': added,
+        '<h2>Added</h2>': added,
+        '<h3>Added</h3>': added,
+        '<h4>Added</h4>': added,
+        '<h5>Added</h5>': added,
+        '<h6>Added</h6>': added,
+        '<h1>Changed</h1>': changed,
+        '<h2>Changed</h2>': changed,
+        '<h3>Changed</h3>': changed,
+        '<h4>Changed</h4>': changed,
+        '<h5>Changed</h5>': changed,
+        '<h6>Changed</h6>': changed,
+        '<h1>Fixed</h1>': fixed,
+        '<h2>Fixed</h2>': fixed,
+        '<h3>Fixed</h3>': fixed,
+        '<h4>Fixed</h4>': fixed,
+        '<h5>Fixed</h5>': fixed,
+        '<h6>Fixed</h6>': fixed,
+        '<h1>Deleted</h1>': deleted,
+        '<h2>Deleted</h2>': deleted,
+        '<h3>Deleted</h3>': deleted,
+        '<h4>Deleted</h4>': deleted,
+        '<h5>Deleted</h5>': deleted,
+        '<h6>Deleted</h6>': deleted,
+    })|raw }}
+{%- endmacro %}
+
+{% macro renderGlobalWidget(globalWidget, config = {}) -%}
+    {% set defaultMessage -%}
+        No content has been added yet.{% if currentUser.can('editChangelogs') %} Add a message on the <a href="{{ url('communicator/global-widget') }}">Communicator Global Widget page</a>.{% endif %}
+    {%- endset %}
+
+    {% set content = globalWidget.content ?? defaultMessage %}
+    {% set format = globalWidget.format ?? 'markdown' %}
+    {% set title = globalWidget.title ?? 'Global Widget' %}
+
+    <h2 class="communicator__widget__title">{{ title }}</h2>
+
+    {% switch format %}
+        {% case 'markdown' %}
+            {{ content|markdown }}
+        {% case 'template' %}
+            {{ include(template_from_string(content)) }}
+        {% case 'twig' %}
+            {{ include(template_from_string(content)) }}
+    {% endswitch %}
+{%- endmacro %}
+
+{% macro renderLog(log, config = {}) -%}
+    {% import _self as helpers %}
+
+    <li class="communicator__changelog__log"{% if config.admin ?? false %} v-if="logArray.includes({{ log.id }})"{% endif %}>
+        {% if config.admin ?? false %}
+            <div class="communicator__changelog__delete_button">
+                <span v-if="currentlyEditing === {{ log.id }}" v-cloak><button class="btn small submit" @click="deleteLog({{ log.id }})">Delete</button> <button class="btn small" @click="currentlyEditing = 0">Cancel</button></span>
+                <button class="btn small" @click="currentlyEditing = {{ log.id }}" v-else>Delete</button>
+            </div>
+        {% endif %}
+
+        <h3 class="communicator__changelog__header"><span class="communicator__changelog__version">{{ log.version }}</span>{{ log.date|date('M d Y') }}</h3>
+        <div class="communicator__text">{{ helpers.replaceHeaders(log.content|markdown) }}</div>
+    </li>
+{%- endmacro %}
+
+{% macro renderLogs(logs, config = {}) -%}
+    {% import _self as helpers %}
+
+    <ul class="communicator__changelog__logs">
+        {% for log in logs %}
+            {{ helpers.renderLog(log, { admin: config.admin ?? false }) }}
+        {% endfor %}
+    </ul>
+{%- endmacro %}

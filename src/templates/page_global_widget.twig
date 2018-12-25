@@ -1,0 +1,139 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Communicator plugin for Craft CMS 3.x
+ *
+ * Communicator index.twig
+ *
+ * @author    Will Browar
+ * @copyright Copyright (c) 2018 Will Browar
+ * @link      https://wbrowar.com
+ * @package   Communicator
+ * @since     1.0.0
+ */
+#}
+
+{% requirePermission 'editGlobalWidgets' %}
+
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+{% import "communicator/macros/helpers.twig" as helpers %}
+
+{% do view.registerAssetBundle("wbrowar\\communicator\\assetbundles\\communicator\\CommunicatorAsset") %}
+
+{% set docsUrl = "https://github.com/wbrowar/communicator/blob/master/README.md" %}
+
+{% set title = "Global Widget" %}
+
+{#{% set pluginCpUrl = url('communicator/global-widget') %}#}
+
+{#{% set selectedSubnavItem = 'globalWidget' %}#}
+
+{#{% set iconUrl = view.getAssetManager().getPublishedUrl('@wbrowar/communicator/assetbundles/changelogcpsection/dist', true) ~ '/img/Changelog-icon.svg' %}#}
+
+{% set fullPageForm = true %}
+
+{% block actionButton %}
+    <input class="btn submit" type="submit" value="Update">
+{% endblock %}
+
+{% set content %}
+    {% set globalWidget = craft.communicator.getGlobalWidget({}, 'one') %}
+
+    {% if globalWidget ?? false %}
+        {% set widgetTitle = globalWidget.title %}
+        {% set widgetContent = globalWidget.content %}
+        {% set widgetFormat = globalWidget.format %}
+    {% else %}
+        {% set tempContent %}Here are a few links to help you get started:
+
+### Information
+
+- [CMS Guide](#)
+- [Documentation](#)
+
+### Editing Content
+
+- [Entries](/admin/entries)
+- [Categories](/admin/categories)
+- [Assets](/admin/assets)
+
+### Fixing Problems
+
+- [Clear Cache](/admin/utilities/clear-caches)
+- [Update Asset Indexes](/admin/utilities/asset-indexes){% endset %}
+
+        {% set widgetTitle = 'Welcome to your CMS' %}
+        {% set widgetContent = tempContent %}
+        {% set widgetFormat = 'markdown' %}
+    {% endif %}
+
+    <div id="communicator__global_widget">
+        <input type="hidden" name="action" value="communicator/global-widget/update-content">
+
+        {% if globalWidget ?? false %}
+            <input type="hidden" name="id" value="{{ globalWidget.id }}">
+
+            <h2>Widget Preview</h2>
+
+            <div class="communicator__global_widget__display" :style="'--preview-max-width:' + displayMaxWidth">
+                <div class="widget wbrowar\communicator\widgets\globalwidget" data-type="wbrowar\communicator\widgets\GlobalWidget">
+                    <div class="front" style="position: relative;">
+                        <div class="pane last">
+                            <h2>Global Widget</h2>
+                            <div class="body">
+                                {{ helpers.renderGlobalWidget(globalWidget) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <h2>Edit Widget</h2>
+
+        <div class="communicator__global_widget__form">
+            <div>
+                {{ forms.textareaField({
+                    label: 'Content',
+                    id: 'content',
+                    name: 'content',
+                    class: 'nicetext',
+                    rows: 5,
+                    value: widgetContent,
+                    instructions: (globalWidget ?? false) ? null : 'Sample content:',
+                }) }}
+            </div>
+            <div>
+                {% if globalWidget ?? false %}
+                    <div class="communicator__global_widget__label">Preview Size</div>
+                    <div class="communicator__global_widget__columns" :class="'communicator__global_widget__columns--' + previewColumns">
+                        <div class="communicator__global_widget__column" @click="updatePreviewColumns(1)"></div>
+                        <div class="communicator__global_widget__column" @click="updatePreviewColumns(2)"></div>
+                        <div class="communicator__global_widget__column" @click="updatePreviewColumns(3)"></div>
+                    </div>
+                {% endif %}
+
+                {{ forms.textField({
+                    label: 'Title',
+                    id: 'title',
+                    name: 'title',
+                    value: widgetTitle,
+                }) }}
+
+                {{ forms.selectField({
+                    label: 'Format',
+                    id: 'format',
+                    name: 'format',
+                    value: widgetFormat,
+                    options: {
+                        markdown: 'Markdown',
+                        twig: 'Twig',
+                    },
+                }) }}
+
+                <input type="hidden" name="templatePath" value="">
+            </div>
+        </div>
+    </div>
+{% endset %}

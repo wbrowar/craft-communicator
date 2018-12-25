@@ -1,0 +1,18 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Communicator plugin for Craft CMS
+ *
+ * GlobalMessage Widget Body
+ *
+ * @author    Will Browar
+ * @copyright Copyright (c) 2018 Will Browar
+ * @link      https://wbrowar.com
+ * @package   Communicator
+ * @since     1.0.0
+ */
+#}
+
+{% import "communicator/macros/helpers.twig" as helpers %}
+
+{{ helpers.renderGlobalWidget(globalWidget) }}

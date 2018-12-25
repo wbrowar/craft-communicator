@@ -1,0 +1,91 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Communicator plugin for Craft CMS 3.x
+ *
+ * Communicator Settings.twig
+ *
+ * @author    Will Browar
+ * @copyright Copyright (c) 2018 Will Browar
+ * @link      https://wbrowar.com
+ * @package   Communicator
+ * @since     1.0.0
+ */
+#}
+
+{% do view.registerAssetBundle("wbrowar\\communicator\\assetbundles\\communicator\\CommunicatorAsset") %}
+
+{% import "_includes/forms" as forms %}
+
+<div class="communicator_grid communicator_grid--3">
+    <div>
+        {{ forms.lightswitchField({
+            label: 'Enable Global Widget',
+            id: 'enableGlobalWidget',
+            name: 'enableGlobalWidget',
+            on: settings.enableGlobalWidget,
+        }) }}
+        <p>Welcome content editors with a widget that shares the same content with all users who have the widget installed.</p>
+    </div>
+    <div>
+        {{ forms.lightswitchField({
+            label: 'Enable Changelog',
+            id: 'enableChangelog',
+            name: 'enableChangelog',
+            on: settings.enableChangelog,
+        }) }}
+        <p>A widget that allows admins to communicate major changes in how the CMS functions.</p>
+    </div>
+    <div>
+        {{ forms.lightswitchField({
+            label: 'Enable Email Support',
+            id: 'enableEmailSupport',
+            name: 'enableEmailSupport',
+            on: settings.enableEmailSupport,
+        }) }}
+        <p>A widget that provides a private contact form, letting content editors notify their support contact of issues they run into while updating their website.</p>
+    </div>
+</div>
+
+
+<hr>
+
+
+<h2>Email Support</h2>
+{{ forms.lightswitchField({
+    label: 'Email Support Form',
+    id: 'enableEmailSupportForm',
+    name: 'enableEmailSupportForm',
+    instructions: 'Enables display and functionality of the form in the Email Support widget',
+    on: settings.enableEmailSupportForm ?? false ? settings.enableEmailSupportForm : false,
+}) }}
+{{ forms.editableTableField({
+    label: 'Support Contacts',
+    id: 'emailSupportContacts',
+    name: 'emailSupportContacts',
+    minRows: 0,
+    addRowLabel: 'Add a contact',
+    instructions: 'Contact information used in the Email Support widget',
+    cols: {
+        email: {
+            heading: 'Email Address',
+            type: 'singleline',
+            placeholder: '(required)',
+        },
+        name: {
+            heading: 'Name',
+            type: 'singleline',
+            placeholder: '(required)',
+        },
+        jobTitle: {
+            heading: 'Job Title',
+            type: 'singleline',
+        },
+        phone: {
+            heading: 'Phone Number',
+            type: 'singleline',
+            placeholder: '(tel URL format: +15551234567)',
+        },
+    },
+    rows: settings.emailSupportContacts ?? ['','','', ''],
+}) }}

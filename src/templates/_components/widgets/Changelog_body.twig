@@ -1,0 +1,28 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Communicator plugin for Craft CMS
+ *
+ * Changelog Widget Body
+ *
+ * @author    Will Browar
+ * @copyright Copyright (c) 2018 Will Browar
+ * @link      https://wbrowar.com
+ * @package   Communicator
+ * @since     1.0.0
+ */
+#}
+
+{% import "communicator/macros/helpers.twig" as helpers %}
+
+{% if logs ?? false %}
+    {{ helpers.renderLogs(logs) }}
+
+    {% if currentUser.can('accessFullChangelog') %}
+        <div class="communicator_buttons communicator_buttons--center communicator_buttons--margin--top">
+            <a class="btn" href="{{ url('communicator/changelog') }}">See all changes</a>
+        </div>
+    {% endif %}
+{% else %}
+    <p>No changelog entries have been added.{% if currentUser.can('editChangelogs') %} Add one on the <a href="{{ url('communicator/changelog') }}">Communicator Changelog page</a>.{% endif %}</p>
+{% endif %}

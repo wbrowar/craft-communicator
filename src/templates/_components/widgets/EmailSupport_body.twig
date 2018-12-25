@@ -1,0 +1,95 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Communicator plugin for Craft CMS
+ *
+ * EmailSupport Widget Body
+ *
+ * @author    Will Browar
+ * @copyright Copyright (c) 2018 Will Browar
+ * @link      https://wbrowar.com
+ * @package   Communicator
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{% set contactInfo = null %}
+
+{% for item in communicatorSettings.emailSupportContacts %}
+    {% if item.email == contact %}
+        {% set contactInfo = item %}
+    {% endif %}
+{% endfor %}
+
+{% if contactInfo ?? false %}
+    <div id="communicator__email_support__widget"
+         data-contact-info-email="{{ contactInfo.email }}"
+         data-contact-info-name="{{ contactInfo.name }}">
+        {% if communicatorSettings.enableEmailSupportForm %}
+            <h2 class="communicator__widget__title">Email {{ contactInfo.name }}</h2>
+
+            {#{{ forms.textareaField({#}
+                {#label: 'Message',#}
+                {#instructions: 'Accepts Markdown.',#}
+                {#id: 'message',#}
+                {#name: 'message',#}
+                {#class: 'nicetext',#}
+            {#}) }}#}
+            <div id="message-field" class="field">
+                <div class="heading">
+                    <label id="message-label" for="message">Message</label>
+                    <div class="instructions"><p>Accepts Markdown.</p></div>
+                </div>
+                <div class="input ltr">
+                    <textarea rows="2" cols="50" id="message" name="message" class="text nicetext fullwidth" style="min-height: 52px;" v-model="message"></textarea>
+                </div>
+            </div>
+            {#{{ forms.checkboxField({#}
+                {#label: 'Send Support Details',#}
+                {#instructions: 'Include helpful details about your browser and internet&nbsp;connection.',#}
+                {#id: 'details',#}
+                {#name: 'details',#}
+                {#checked: true,#}
+            {#}) }}#}
+            <div id="details-field" class="field checkboxfield has-instructions">
+                <input type="hidden" name="details" value=""><input type="checkbox" value="1" id="details" name="details" checked="checked" class="checkbox" v-model="includeDetails"><label for="details">Send Support Details</label>
+                <div class="instructions">
+                    <p>Include helpful details about your browser and internet&nbsp;connection.</p>
+                </div>
+            </div>
+
+            <button class="btn submit" @click="sendEmail"><span v-if="status == 'sent'">Send again</span><span v-else>Send</span></button>
+        {% else %}
+            <h2 class="communicator__widget__title">Contact {{ contactInfo.name }}</h2>
+
+            {% if contactInfo.jobTitle ?? false %}
+                <p>{{ contactInfo.jobTitle }}</p>
+            {% endif %}
+
+            {% if contactInfo.phone ?? false %}
+                <div>
+                    Phone: <a href="tel:{{ contactInfo.phone }}">{{ craft.communicator.parsePhoneNumber(contactInfo.phone) }}</a>
+                </div>
+            {% endif %}
+
+            {% if contactInfo.email ?? false %}
+                <div>
+                    Email: <a href="mailto:{{ contactInfo.email }}">{{ contactInfo.email }}</a>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% else %}
+    <h2 class="communicator__widget__title">Email Support</h2>
+    <p>No support contacts have been added.{% if currentUser.admin %} Add them in
+        <a href="{{ url('settings/plugins/communicator') }}">Communicator plugin settings</a>.{% endif %}
+    </p>
+{% endif %}
+
+{% js %}
+    if (window.communicatorInitEmailSupport || false) {
+    window.communicatorInitEmailSupport();
+    }
+{% endjs %}

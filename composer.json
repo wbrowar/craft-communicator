@@ -1,0 +1,44 @@
+{
+    "name": "wbrowar/communicator",
+    "description": "Widgets that provide content to several users from a single source.",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "communicator"
+    ],
+    "support": {
+        "docs": "https://github.com/wbrowar/communicator/blob/master/README.md",
+        "issues": "https://github.com/wbrowar/communicator/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Will Browar",
+            "homepage": "https://wbrowar.com"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.1.0-beta.1"
+    },
+    "autoload": {
+        "psr-4": {
+          "wbrowar\\communicator\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Communicator",
+        "handle": "communicator",
+        "hasCpSettings": true,
+        "changelogUrl": "https://raw.githubusercontent.com/wbrowar/communicator/master/CHANGELOG.md",
+        "components": {
+            "globalWidget": "wbrowar\\communicator\\services\\GlobalWidget",
+            "changelog": "wbrowar\\communicator\\services\\Changelog",
+            "emailSupport": "wbrowar\\communicator\\services\\EmailSupport"
+        },
+        "class": "wbrowar\\communicator\\Communicator"
+    }
+}
