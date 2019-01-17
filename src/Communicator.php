@@ -98,14 +98,14 @@ class Communicator extends Plugin
                     $event->navItems[] = [
                         'url' => 'communicator/changelog',
                         'label' => 'Changelog',
-//                    'icon' => '@ns/prefix/path/to/icon.svg',
+                        'icon' => '@wbrowar/communicator/assetbundles/communicator/dist/icon/icon-mask.svg',
                     ];
                 }
                 if ($this->getSettings()->enableGlobalWidget && Craft::$app->getUser()->checkPermission('accessPlugin-communicator') && Craft::$app->getUser()->checkPermission('editGlobalWidgets')) {
                     $event->navItems[] = [
                         'url' => 'communicator/global-widget',
                         'label' => 'Global Widget',
-//                    'icon' => '@ns/prefix/path/to/icon.svg',
+                        'icon' => '@wbrowar/communicator/assetbundles/communicator/dist/icon/icon-mask.svg',
                     ];
                 }
             }

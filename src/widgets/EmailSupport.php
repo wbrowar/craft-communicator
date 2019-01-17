@@ -60,7 +60,7 @@ class EmailSupport extends Widget
      */
     public static function iconPath()
     {
-        return Craft::getAlias("@wbrowar/communicator/assetbundles/communicator/dist/icon/close.svg");
+        return Craft::getAlias("@wbrowar/communicator/assetbundles/communicator/dist/icon/icon-mask.svg");
     }
 
     /**
