@@ -1,5 +1,5 @@
 {
-    "name": "wbrowar/communicator",
+    "name": "wbrowar/craft-communicator",
     "description": "Widgets that provide content to several users from a single source.",
     "type": "craft-plugin",
     "version": "1.0.0",
@@ -11,8 +11,8 @@
         "communicator"
     ],
     "support": {
-        "docs": "https://github.com/wbrowar/communicator/blob/master/README.md",
-        "issues": "https://github.com/wbrowar/communicator/issues"
+        "docs": "https://github.com/wbrowar/craft-communicator/blob/master/README.md",
+        "issues": "https://github.com/wbrowar/craft-communicator/issues"
     },
     "license": "MIT",
     "authors": [
@@ -33,7 +33,7 @@
         "name": "Communicator",
         "handle": "communicator",
         "hasCpSettings": true,
-        "changelogUrl": "https://raw.githubusercontent.com/wbrowar/communicator/master/CHANGELOG.md",
+        "changelogUrl": "https://raw.githubusercontent.com/wbrowar/craft-communicator/master/CHANGELOG.md",
         "components": {
             "globalWidget": "wbrowar\\communicator\\services\\GlobalWidget",
             "changelog": "wbrowar\\communicator\\services\\Changelog",

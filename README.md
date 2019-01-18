@@ -4,7 +4,7 @@ Tools that communicate project-specific information between clients and admins a
 
 ![Screenshot](resources/img/widgets.png)
 
-> For users of [Guide](https://plugins.craftcms.com/guide) 1.3.x: This plugin is a replacement for the three widgets that are included in Guide. These three widgets and all of their data will be removed from Guide in a future update.
+> For users of [Guide](https://plugins.craftcms.com/guide) 1.3.x and below: This plugin is a replacement for the three widgets that are included in Guide. These three widgets and all of their data will be removed from Guide in a future update: Website Updates, Welcome Widget, and Email Support.
 
 ## Requirements
 
@@ -20,7 +20,7 @@ Communicator can be installed through the [Craft CMS Plugin Store](https://plugi
 
 2. Then tell Composer to load the plugin:
 
-        composer require wbrowar/communicator
+        composer require wbrowar/craft-communicator
 
 3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Communicator.
 
