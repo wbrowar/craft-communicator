@@ -1,6 +1,6 @@
 # Communicator plugin for Craft CMS 3.x
 
-Tools that communicate project-specific information between clients and admins and developers.
+Tools that communicate project-specific information between clients, admins, and developers.
 
 ![Screenshot](resources/img/widgets.png)
 
