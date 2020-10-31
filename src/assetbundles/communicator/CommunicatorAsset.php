@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2018 Will Browar
  */
 
-namespace wbrowar\communicator\assetbundles\Communicator;
+namespace wbrowar\communicator\assetbundles\communicator;
 
 use Craft;
 use craft\web\AssetBundle;
