@@ -139,7 +139,7 @@ class Install extends Migration
         $this->createIndex(
             null,
             '{{%communicator_changelogs}}',
-            'content',
+            'content(255)',
             false
         );
         // Additional commands depending on the db driver
@@ -171,7 +171,7 @@ class Install extends Migration
         $this->createIndex(
             null,
             '{{%communicator_globalwidgets}}',
-            'content',
+            'content(255)',
             false
         );
         // Additional commands depending on the db driver
